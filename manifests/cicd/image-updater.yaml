@@ -5,7 +5,7 @@ metadata:
   namespace: cicd
 spec:
   applicationRefs:
-    - namePattern: infra-app
+    - namePattern: cluster-chronicles
       useAnnotations: true
   writeBackConfig:
     method: argocd
