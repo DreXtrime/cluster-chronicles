@@ -4,7 +4,7 @@ metadata:
   name: cluster-chronicles
   namespace: cicd
   annotations:
-    argocd-image-updater.argoproj.io/image-list: backend=ghcr.io/drextrime/infra-backend,frontend=ghcr.io/drextrime/infra-frontend
+    argocd-image-updater.argoproj.io/image-list: backend=ghcr.io/drextrime/infra-backend:latest,frontend=ghcr.io/drextrime/infra-frontend:latest
     argocd-image-updater.argoproj.io/backend.update-strategy: digest
     argocd-image-updater.argoproj.io/frontend.update-strategy: digest
     argocd-image-updater.argoproj.io/write-back-method: argocd
