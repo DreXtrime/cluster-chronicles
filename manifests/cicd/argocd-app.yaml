@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: infra-app
+  name: cluster-chronicles
   namespace: cicd
   annotations:
     argocd-image-updater.argoproj.io/image-list: backend=ghcr.io/drextrime/infra-backend,frontend=ghcr.io/drextrime/infra-frontend
