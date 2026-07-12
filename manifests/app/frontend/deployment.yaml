@@ -13,6 +13,7 @@ spec:
       labels:
         app: frontend
     spec:
+      serviceAccountName: backend-sa
       containers:
         - name: frontend
           image: ghcr.io/drextrime/infra-frontend:latest

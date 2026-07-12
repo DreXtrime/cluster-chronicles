@@ -1,0 +1,45 @@
+# Pods use ServiceAccounts as their identity within the cluster
+# ServiceAccount for the backend pod
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: backend-sa
+  namespace: app
+---
+# ServiceAccount for the frontend pod
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: frontend-sa
+  namespace: app
+---
+# Role defining what actions are allowed within the app namespace
+# Least privilege principle, only read access to pods, services, endpoints
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: app-role
+  namespace: app
+rules:
+  - apiGroups: [""]
+    resources: ["pods", "services", "endpoints"]
+    verbs: ["get", "list", "watch"]
+---
+# Binds the approle to both backend and frontend ServiceAccounts
+# This grants both pods the permissions defined in app-role
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: app-rolebinding
+  namespace: app
+subjects:
+  - kind: ServiceAccount
+    name: backend-sa
+    namespace: app
+  - kind: ServiceAccount
+    name: frontend-sa
+    namespace: app
+roleRef:
+  kind: Role
+  name: app-role
+  apiGroup: rbac.authorization.k8s.io
