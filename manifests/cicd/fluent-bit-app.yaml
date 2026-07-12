@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://fluent.github.io/helm-charts
     chart: fluent-bit
-    targetRevision: "0.57.9"
+    targetRevision: "*"
     helm:
       values: |
         config:
@@ -16,30 +16,21 @@ spec:
             [OUTPUT]
                 Name es
                 Match *
-                Host elasticsearch-master
+                Host elasticsearch-es-http
                 Port 9200
+                HTTP_User elastic
+                HTTP_Passwd ${ELASTICSEARCH_PASSWORD}
+                tls On
+                tls.verify Off
                 Logstash_Format On
                 Logstash_Prefix kubernetes
                 Retry_Limit False
-                tls On
-                tls.verify Off
-                HTTP_User elastic
-                HTTP_Passwd ${ELASTICSEARCH_PASSWORD}
-                Suppress_Type_Name On
-          filters: |
-            [FILTER]
-                Name kubernetes
-                Match kube.*
-                Merge_Log On
-                Keep_Log Off
-                K8S-Logging.Parser On
-                K8S-Logging.Exclude On
         env:
           - name: ELASTICSEARCH_PASSWORD
             valueFrom:
               secretKeyRef:
-                name: elastic-credentials
-                key: password
+                name: elasticsearch-es-elastic-user
+                key: elastic
   destination:
     server: https://kubernetes.default.svc
     namespace: logging
