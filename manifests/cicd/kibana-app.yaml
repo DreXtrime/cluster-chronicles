@@ -18,17 +18,22 @@ spec:
           limits:
             cpu: 500m
             memory: 1Gi
-        elasticsearchHosts: "http://elasticsearch-master:9200"
+        elasticsearchHosts: "https://elasticsearch-master:9200"
         kibanaConfig:
           kibana.yml: |
-            elasticsearch.hosts: ["http://elasticsearch-master:9200"]
-            xpack.security.enabled: false
+            elasticsearch.hosts: ["https://elasticsearch-master:9200"]
+            elasticsearch.username: "elastic"
+            elasticsearch.password: "changeme"
+            elasticsearch.ssl.verificationMode: none
+            xpack.security.enabled: true
             server.ssl.enabled: false
-        pre-install-hook:
-          enabled: false
         extraEnvs:
           - name: ELASTICSEARCH_HOSTS
-            value: "http://elasticsearch-master:9200"
+            value: "https://elasticsearch-master:9200"
+          - name: ELASTICSEARCH_USERNAME
+            value: "elastic"
+          - name: ELASTICSEARCH_PASSWORD
+            value: "changeme"
   destination:
     server: https://kubernetes.default.svc
     namespace: logging
