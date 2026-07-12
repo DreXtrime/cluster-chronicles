@@ -1,0 +1,40 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: fluent-bit
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: https://fluent.github.io/helm-charts
+    chart: fluent-bit
+    targetRevision: "*"
+    helm:
+      values: |
+        config:
+          outputs: |
+            [OUTPUT]
+                Name es
+                Match *
+                Host elasticsearch-master
+                Port 9200
+                Logstash_Format On
+                Logstash_Prefix kubernetes
+                Retry_Limit False
+          filters: |
+            [FILTER]
+                Name kubernetes
+                Match kube.*
+                Merge_Log On
+                Keep_Log Off
+                K8S-Logging.Parser On
+                K8S-Logging.Exclude On
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

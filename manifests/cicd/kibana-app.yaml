@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kibana
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.elastic.co
+    chart: kibana
+    targetRevision: "*"
+    helm:
+      values: |
+        resources:
+          requests:
+            cpu: 100m
+            memory: 512Mi
+          limits:
+            cpu: 500m
+            memory: 1Gi
+        elasticsearchHosts: "http://elasticsearch-master:9200"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: logging
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

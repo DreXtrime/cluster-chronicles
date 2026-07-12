@@ -18,3 +18,5 @@ alertmanager:
     alertmanagerConfigSelector:
       matchLabels:
         alertmanagerConfig: discord
+    alertmanagerConfigMatcherStrategy:
+      type: None
