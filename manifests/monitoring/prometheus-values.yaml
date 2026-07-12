@@ -10,3 +10,11 @@ prometheus:
   prometheusSpec:
     serviceMonitorNamespaceSelector: {}
     serviceMonitorSelector: {}
+    ruleNamespaceSelector: {}
+    ruleSelector: {}
+
+alertmanager:
+  alertmanagerSpec:
+    alertmanagerConfigSelector:
+      matchLabels:
+        alertmanagerConfig: discord
