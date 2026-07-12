@@ -30,8 +30,15 @@ spec:
             requests:
               storage: 10Gi
         secret:
-          enabled: true
-          password: "${ELASTICSEARCH_PASSWORD}"
+          enabled: false
+        existingSecret: "elastic-credentials"
+        existingSecretPasswordKey: "password"
+        extraEnvs:
+          - name: ELASTIC_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: elastic-credentials
+                key: password
   destination:
     server: https://kubernetes.default.svc
     namespace: logging

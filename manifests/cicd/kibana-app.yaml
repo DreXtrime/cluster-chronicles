@@ -11,7 +11,7 @@ spec:
     targetRevision: "8.5.1"
     helm:
       values: |
-        imageTag: "8.19.3"
+        imageTag: "8.5.1"
         resources:
           requests:
             cpu: 100m
@@ -23,16 +23,46 @@ spec:
         kibanaConfig:
           kibana.yml: |
             elasticsearch.hosts: ["https://elasticsearch-master:9200"]
-            elasticsearch.username: "elastic"
             elasticsearch.ssl.verificationMode: none
-            xpack.security.enabled: true
             server.ssl.enabled: false
-        extraEnvs:
-          - name: ELASTICSEARCH_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: elasticsearch-master-credentials
-                key: password
+        extraObjects:
+          - apiVersion: batch/v1
+            kind: Job
+            metadata:
+              name: kibana-setup-dataview
+              namespace: logging
+              annotations:
+                argocd.argoproj.io/hook: PostSync
+                argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+            spec:
+              ttlSecondsAfterFinished: 120
+              template:
+                spec:
+                  restartPolicy: OnFailure
+                  containers:
+                    - name: create-dataview
+                      image: curlimages/curl:latest
+                      command:
+                        - /bin/sh
+                        - -c
+                        - |
+                          echo "Waiting for Kibana to be ready..."
+                          until curl -sk -o /dev/null -w "%{http_code}" http://kibana-kibana:5601/api/status | grep -q "200"; do
+                            echo "Kibana not ready yet, waiting..."
+                            sleep 10
+                          done
+                          echo "Kibana is ready, creating data view..."
+                          curl -sk -X POST http://kibana-kibana:5601/api/data_views/data_view \
+                            -H "kbn-xsrf: true" \
+                            -H "Content-Type: application/json" \
+                            -d '{
+                              "data_view": {
+                                "title": "kubernetes-*",
+                                "name": "Kubernetes Logs",
+                                "timeFieldName": "@timestamp"
+                              }
+                            }'
+                          echo "Done."
   destination:
     server: https://kubernetes.default.svc
     namespace: logging
