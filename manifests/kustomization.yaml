@@ -6,3 +6,5 @@ resources:
   - frontend/deployment.yaml
   - frontend/service.yaml
   - ingress/ingress.yaml
+  - logging/elasticsearch.yaml
+  - logging/kibana.yaml
