@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: app-of-apps
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/DreXtrime/cluster-chronicles
+    targetRevision: HEAD
+    path: manifests/cicd
+    directory:
+      recurse: true
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cicd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
