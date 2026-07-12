@@ -23,6 +23,9 @@ spec:
           kibana.yml: |
             elasticsearch.hosts: ["http://elasticsearch-master:9200"]
             xpack.security.enabled: false
+            server.ssl.enabled: false
+        pre-install-hook:
+          enabled: false
         extraEnvs:
           - name: ELASTICSEARCH_HOSTS
             value: "http://elasticsearch-master:9200"
