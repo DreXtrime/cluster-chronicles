@@ -25,6 +25,7 @@ spec:
                 Logstash_Format On
                 Logstash_Prefix kubernetes
                 Retry_Limit False
+                Suppress_Type_Name On
         env:
           - name: ELASTICSEARCH_PASSWORD
             valueFrom:
