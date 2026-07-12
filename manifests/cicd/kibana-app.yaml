@@ -8,9 +8,10 @@ spec:
   source:
     repoURL: https://helm.elastic.co
     chart: kibana
-    targetRevision: "*"
+    targetRevision: "8.5.1"
     helm:
       values: |
+        imageTag: "8.19.3"
         resources:
           requests:
             cpu: 100m
@@ -23,17 +24,15 @@ spec:
           kibana.yml: |
             elasticsearch.hosts: ["https://elasticsearch-master:9200"]
             elasticsearch.username: "elastic"
-            elasticsearch.password: "changeme"
             elasticsearch.ssl.verificationMode: none
             xpack.security.enabled: true
             server.ssl.enabled: false
         extraEnvs:
-          - name: ELASTICSEARCH_HOSTS
-            value: "https://elasticsearch-master:9200"
-          - name: ELASTICSEARCH_USERNAME
-            value: "elastic"
           - name: ELASTICSEARCH_PASSWORD
-            value: "changeme"
+            valueFrom:
+              secretKeyRef:
+                name: elasticsearch-master-credentials
+                key: password
   destination:
     server: https://kubernetes.default.svc
     namespace: logging
