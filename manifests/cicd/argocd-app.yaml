@@ -13,7 +13,7 @@ spec:
   source:
     repoURL: https://github.com/DreXtrime/cluster-chronicles
     targetRevision: HEAD
-    path: manifests
+    path: manifests/app
   destination:
     server: https://kubernetes.default.svc
     namespace: app
