@@ -28,6 +28,11 @@ spec:
           resources:
             requests:
               storage: 10Gi
+        security:
+          enabled: false
+        xpack:
+          security:
+            enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: logging
