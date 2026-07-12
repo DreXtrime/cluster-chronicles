@@ -6,7 +6,7 @@ kubectl port-forward -n cicd service/argocd-server 5000:5000 &
 
 GRAFANA_PASSWORD=$(kubectl get secret -n monitoring prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 -d)
 ARGO_PASSWORD=$(kubectl -n cicd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d)
-
+echo "============================================="
 echo "Grafana: http://localhost:3000"
 echo "Password $GRAFANA_PASSWORD"
 echo ""
@@ -15,5 +15,6 @@ echo "Password $ARGO_PASSWORD"
 echo ""
 echo "Prometheus: https://localhost:9091"
 echo ""
+echo "============================================="
 echo "Press Ctrl+C to stop all port-forwards"
 wait
