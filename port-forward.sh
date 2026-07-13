@@ -24,6 +24,7 @@ echo ""
 echo "Kibana:         http://127.0.0.1:5601"
 echo "Password:       $KIBANA_PASSWORD"
 echo "Elasticsearch:  https://127.0.0.1:9200"
+echo "Elasticsearch:  https://127.0.0.1:8888"
 echo "============================================="
 echo "Press Ctrl+C to stop all port-forwards"
 wait
