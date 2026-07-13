@@ -14,6 +14,7 @@ This repository contains all Kubernetes manifests for deploying the [simple-infr
 - **CI/CD**: GitHub Actions builds, scans (Trivy + bandit), and publishes images on push to main
 - **Monitoring**: Prometheus + Grafana with custom application dashboards and Alertmanager alerts to Discord
 - **Logging**: ECK (Elasticsearch + Kibana) with Fluent Bit collecting logs from all pods
+- **KubeView**: Render an interactive webui diagram of the cluster
 - **Autoscaling**: HPA scales frontend between 2-5 replicas based on CPU
 
 ## Prerequisites
