@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kubeview
+  namespace: cicd
+spec:
+  project: default
+  source:
+    repoURL: https://code.benco.io/kubeview/deploy/helm
+    chart: kubeview
+    targetRevision: "*"
+    helm:
+      values: |
+        service:
+          type: ClusterIP
+        ingress:
+          enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kubeview
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

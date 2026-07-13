@@ -4,6 +4,7 @@ kubectl port-forward -n monitoring service/prometheus-kube-prometheus-prometheus
 kubectl port-forward -n monitoring service/prometheus-kube-prometheus-alertmanager 9093:9093 &
 kubectl port-forward -n cicd service/argocd-server 9090:443 &
 kubectl port-forward -n logging service/kibana-kb-http 5601:5601 &
+kubectl port-forward -n kubeview service/kubeview 8888:80 &
 kubectl port-forward -n logging service/elasticsearch-master 9200:9200 &
 
 GRAFANA_PASSWORD=$(kubectl get secret -n monitoring prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 -d)
