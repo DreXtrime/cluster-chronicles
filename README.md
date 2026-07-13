@@ -2,6 +2,10 @@
 
 A production-style Kubernetes infrastructure running a Flask monitoring application, with full CI/CD, observability, and GitOps automation.
 
+> This repository is configured as an educational playground to demonstrate Kubernetes cluster configuration, GitOps, and monitoring stacks within a local **Minikube** sandbox.
+>
+> **Don't attempt to clone and deploy this cluster manually unless you know what you are doing.**  
+
 ## Overview
 
 This repository contains all Kubernetes manifests for deploying the [simple-infra-monitor](https://github.com/DreXtrime/simple-infra-monitor) application stack. Infrastructure is managed declaratively via ArgoCD - pushing to this repo automatically updates the cluster.
