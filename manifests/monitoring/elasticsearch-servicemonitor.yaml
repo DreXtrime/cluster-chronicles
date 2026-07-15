@@ -1,0 +1,28 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: elasticsearch-monitor
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  namespaceSelector:
+    matchNames:
+      - logging
+  selector:
+    matchLabels:
+      common.k8s.elastic.co/type: elasticsearch
+  endpoints:
+    - port: https
+      scheme: https
+      path: /_prometheus/metrics
+      interval: 15s
+      tlsConfig:
+        insecureSkipVerify: true
+      basicAuth:
+        username:
+          name: elasticsearch-es-elastic-user
+          key: username
+        password:
+          name: elasticsearch-es-elastic-user
+          key: elastic

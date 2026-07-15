@@ -75,3 +75,34 @@ spec:
           annotations:
             summary: "Kubernetes API server unreachable"
             description: "The Kubernetes API server has been unreachable for more than 1 minute"
+
+    - name: elasticsearch-alerts
+      rules:
+        - alert: ElasticsearchClusterYellow
+          expr: elasticsearch_cluster_health_status{color="yellow"} == 1
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Elasticsearch cluster status is yellow"
+            description: "Elasticsearch cluster health is yellow - some replica shards are unassigned"
+
+        - alert: ElasticsearchClusterRed
+          expr: elasticsearch_cluster_health_status{color="red"} == 1
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Elasticsearch cluster status is red"
+            description: "Elasticsearch cluster health is red - some primary shards are unassigned"
+
+    - name: logging-alerts
+      rules:
+        - alert: FluentBitLogCollectionErrors
+          expr: increase(fluentbit_output_errors_total[5m]) > 0
+          for: 1m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Fluent Bit log collection errors"
+            description: "Fluent Bit is experiencing output errors, logs may not be reaching Elasticsearch"
